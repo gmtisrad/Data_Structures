@@ -115,16 +115,26 @@ Description: This function inserts data after the Node that contains the
 						 reference data.
 ******************************************************************************/
 void Linked_List::Insert_After(void * pData, void * pReference, int size){
+	if (NULL == pData) {
+		std::cout << "Error: No data to insert.\n";
+		return;
+	}
+
 	Node * pTempNode = new Node();
 	pTempNode->mpData = malloc(size);
 	MemCpy(pData, pTempNode->mpData, size);
+
 
 	if (NULL == this->mpcHead) {
 		this->mpcCurrent = pTempNode;
 		this->mpcHead = pTempNode;
 	}
+	else if (*(int *)this->mpcCurrent->mpData == *(int *)pReference) {
+		this->Insert_Next(pData, size);
+		this->mpcCurrent = this->mpcHead;
+	}
 	else {
-		//TODO: Implement recursive function
+		this->Insert_After(pData, pReference, size);
 	}
 }
 
@@ -136,12 +146,29 @@ Returns:		 None.
 Description: Inserts a Node containing the data after this->mpcCurrent
 ******************************************************************************/
 void Linked_List::Insert_Next(void * pData, int size) {
-	Node * pTempNode = new Node();
-	pTempNode->mpData = malloc(size);
-	MemCpy(pData, pTempNode->mpData, size);
-	
-	if (NULL == this->mpcCurrent) {
-		//TODO: Implement Recursive Function
+	if (NULL == pData) {
+		std::cout << "Error: No data to insert.\n";
+		return;
+	}
+
+	Node * pNewNode = new Node();
+	pNewNode->mpData = malloc(size);
+	MemCpy(pData, pNewNode->mpData, size);
+
+	if (NULL == this->mpcHead) {
+		this->mpcHead = pNewNode;
+		this->mpcCurrent = pNewNode;
+		return;
+	}
+	else if (NULL == this->mpcCurrent->mpcNext) {
+		this->mpcCurrent->mpcNext = pNewNode;
+		this->mpcCurrent = pNewNode;
+		return;
+	}
+	else {
+		pNewNode->mpcNext = this->mpcCurrent->mpcNext;
+		this->mpcCurrent->mpcNext = pNewNode;
+		return;
 	}
 }
 
@@ -211,8 +238,7 @@ Description: Recursively traverses the list printing
 ****************************************************/
 void Linked_List::Print_List(){
 	if (NULL == this->mpcHead) {
-		ASSERT("Print_List, NULL == this->mpcHead", NULL == this->mpcHead);
-		std::cout << "List is empty.\n";
+		std::cout << "Error: List is empty.\n";
 		return;
 	}
 	else if (NULL == this->mpcCurrent->mpcNext) {
@@ -228,6 +254,12 @@ void Linked_List::Print_List(){
 	}
 }
 
+/******************************************************************************
+Method:      Linked_List::Is_Sorted_Ascending
+Parameters:  None.
+Returns:		 bool - True if list is sorted; Else false.
+Description: Recursively checks if the list is sorted in ascending order.
+******************************************************************************/
 bool Linked_List::Is_Sorted_Ascending() {
 	bool bIsSorted = true;
 	this->mpcCurrent = this->mpcHead;

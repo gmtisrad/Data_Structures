@@ -48,21 +48,14 @@ int main(int argc, char * argv[]) {
 	pLinkedList = new Linked_List();
 
 	for (int i = 0; i < 8; i++) {
-		pLinkedList->Insert_After(&i, sizeof(int));
+		pLinkedList->Insert_Next(&i, sizeof(int));
 	}
-	pLinkedList->Sort_Ascending();
-	int * pData = new int();
-	*pData = 4;
-
 	pLinkedList->mpcCurrent = pLinkedList->mpcHead;
 	pLinkedList->Print_List();
-	pLinkedList->mpcCurrent = pLinkedList->mpcHead;
-	pLinkedList->Insert_Sorted_Ascending(pData, sizeof(int));
-	pLinkedList->mpcCurrent = pLinkedList->mpcHead;
+	pLinkedList->Sort_Ascending();
 	pLinkedList->Print_List();
 
 	delete pLinkedList;
 
-	std::cin >> *pData;
 	return EXIT_SUCCESS;
 }
