@@ -31,6 +31,7 @@ public:
 	Linked_List();
 	void Insert_Last(void * pData, int size);
 	void Insert_After(void * pData, void * pReference, int size);
+	void Insert_Next(void * pData, int size);
 	void Insert_Start(void * pData, int size);
 	void Insert_Sorted_Ascending(void * pData, int size);
 	void Print_List();
